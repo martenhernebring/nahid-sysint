@@ -1,7 +1,6 @@
 package se.yrgo.schedule;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +55,6 @@ public class ScheduleServlet extends HttpServlet {
         List<Assignment> assignments = new ArrayList<>();
         // Call the correct method, depending on the parser's type value
         try {
-            StringBuilder table;
             switch (parser.type()) {
             case ALL:
                 assignments = db.all();

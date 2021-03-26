@@ -7,7 +7,7 @@ public class FormatterFactory {
 
     private static Formatter XML_FORMATTER;
     private static Formatter HTML_FORMATTER = new HtmlFormatter();
-    private static Formatter JSON_FORMATTER;
+    private static Formatter JSON_FORMATTER = new JsonFormatter();
 
     /**
      * Returns a formatter for the given contentType
@@ -17,9 +17,9 @@ public class FormatterFactory {
      *         contentType. Defaults to HTML. Cannot handle null.
      */
     public static Formatter getFormatter(String contentType) {
-        if (contentType.contains("xml")) {
+        if (contentType.equalsIgnoreCase("xml")) {
             return XML_FORMATTER;
-        } else if (contentType.contains("json")) {
+        } else if (contentType.equalsIgnoreCase("json")) {
             return JSON_FORMATTER;
         } else {
             return HTML_FORMATTER;
