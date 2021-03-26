@@ -12,4 +12,9 @@ public class Substitute {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "Substitute [name=" + name + "]";
+    }
 }

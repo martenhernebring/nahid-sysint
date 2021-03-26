@@ -19,11 +19,11 @@ public class HtmlFormatter implements Formatter {
             html.append("<em>No assignments found.</em>");
         } else {
             html.append(
-                    "<table border=\"1\">\n <tr>\n  <th>Teacher</th>\n  <th>date</th>\n  <th>school</th>\n </tr>\n");
+                    "<table border=\"1\">\n <tr>\n  <th>Teacher</th>\n  <th>date</th>\n  <th>school</th>\n <th>address</th>\n </tr>\n");
             for (Assignment assignment : assignments) {
-                html.append(" <tr>\n  <td>").append(assignment.teacher()).append("</td>\n").append("  <td>")
-                        .append(assignment.date()).append("</td>\n").append("  <td>").append(assignment.school())
-                        .append("</td>\n </tr>\n");
+                html.append(" <tr>\n  <td>").append(assignment.teacher().getName()).append("</td>\n").append("  <td>")
+                        .append(assignment.date()).append("</td>\n").append("  <td>").append(assignment.school().getName())
+                        .append("</td>\n").append("  <td>").append(assignment.school().getAddress()).append("</td>\n </tr>\n");
             }
             html.append("</table>\n");
         }

@@ -86,6 +86,6 @@ public class DatabaseAssignments implements Assignments {
             Assignment assignment = new Assignment(substitute, date, school);
             result.add(assignment);
         }
-        return null;
+        return result;
     }
 }

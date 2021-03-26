@@ -14,4 +14,13 @@ public class School {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "School [name=" + name + ", address=" + address + "]";
+    }
+
+    public String getAddress() {
+        return address;
+    }
 }
