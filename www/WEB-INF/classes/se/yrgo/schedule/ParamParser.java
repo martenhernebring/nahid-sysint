@@ -59,15 +59,19 @@ public class ParamParser {
   }
   
   private void parseType() {
-    if (teacherId == null && day == null) {
-      type = QueryType.ALL;
-    } else if (day != null && teacherId != null) {
-      type = QueryType.TEACHER_ID_AND_DAY;
-    } else if (day != null && teacherId == null) {
-      type = QueryType.DAY;
-    } else {
-      type = QueryType.TEACHER_ID;
-    }
+      if(teacherId == null) {
+          if(day == null) {
+              type = QueryType.ALL;
+          } else {
+              type = QueryType.DAY;
+          }
+      } else {
+          if(day == null) {
+              type = QueryType.TEACHER_ID;
+          } else {
+              type = QueryType.TEACHER_ID_AND_DAY;
+          }
+      }
   }
   
   private void parseValues() {
