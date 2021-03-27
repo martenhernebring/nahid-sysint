@@ -22,7 +22,7 @@ import org.w3c.dom.Node;
 
 /**
  * A class implementing the Formatter interface. Formats a List of Assignment to
- * XML.
+ * XML. For testing purposes please use the testxml.sh file.
  *
  */
 public class XmlFormatter implements Formatter {
@@ -46,11 +46,8 @@ public class XmlFormatter implements Formatter {
                 root.appendChild(createChildNode(assignment));
             }
         } else {
-            Element root = document.createElement("not_found");
-            document.appendChild(root);
-            addChild("title", "No assignments found", root);
-            addChild("body", "No assignment found for that date and/or substitute", root);
-            addChild("footer", " - Try with a new date and/or substitute", root);
+            // For testing no data found please use the test_bad_date_and_teacher.sh file
+            notFound();
         }
         String xml;
         try {
@@ -99,5 +96,13 @@ public class XmlFormatter implements Formatter {
         Element childElement = document.createElement(childMeta);
         childElement.appendChild(document.createTextNode(childData));
         parent.appendChild(childElement);
+    }
+    
+    private void notFound() {
+        Element root = document.createElement("not_found");
+        document.appendChild(root);
+        addChild("title", "No assignments found", root);
+        addChild("body", "No assignment found for that date and/or substitute", root);
+        addChild("footer", " - Try with a new date and/or substitute", root);     
     }
 }

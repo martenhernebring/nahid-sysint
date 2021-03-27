@@ -1,15 +1,13 @@
 package se.yrgo.schedule.formatter;
 
-import java.util.Collection;
 import java.util.List;
 
 import se.yrgo.schedule.assignment.Assignment;
 import org.json.*;
-import org.w3c.dom.Element;
 
 /**
  * A class implementing the Formatter interface. Formats a List of Assignment to
- * JSON.
+ * JSON. For testing purposes please use the testjson.sh file.
  *
  */
 public class JsonFormatter implements Formatter {
@@ -22,6 +20,7 @@ public class JsonFormatter implements Formatter {
                 JSON.put(JSONAssignment(assignment));
             }
         } else {
+            // For testing no data found please use the test_bad_date_and_teacher.sh file
             JSON = notFound();
         }
         return JSON.toString(2);

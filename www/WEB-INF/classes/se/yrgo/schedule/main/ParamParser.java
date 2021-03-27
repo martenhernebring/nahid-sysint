@@ -40,11 +40,6 @@ public class ParamParser {
         parseValues();
         parseType();
         parseContentType();
-        /*
-         * System.out.
-         * printf("Type: %s teacherId: %s day: %s Content-Type: %s Format: %s\n",
-         * type.toString(), teacherId, day, contentType, format);
-         */
     }
 
     private void parseContentType() {

@@ -17,9 +17,12 @@ public class DBHelper {
         }
     }
 
+    /** Creates data from the SQL database
+     * @param SQL Request to the database. Warning! SQL injection possible
+     * @return The result from the database SQL query.
+     * */
     public ResultSet fetch(String SQL) {
         try {
-            // System.out.println("SQL:\n" + SQL);
             Statement stm = con.createStatement();
             return stm.executeQuery(SQL);
         } catch (SQLException e) {

@@ -1,7 +1,7 @@
 package se.yrgo.schedule.formatter;
 
 /**
- * A factory to get a formatter
+ * A factory to get a formatter. For testing not supported formats please use the testjsong.sh file.
  */
 public class FormatterFactory {
 
@@ -11,9 +11,9 @@ public class FormatterFactory {
     /**
      * Returns a formatter for the given contentType
      * 
-     * @param The content type you want to format to (HTML is the only implemented)
+     * @param contentType The content type you want to format to (XML and JSON is the only ones allowed)
      * @return A Formatter of the correct type, depending on the provided
-     *         contentType. Defaults to HTML. Cannot handle null.
+     *         contentType. Cannot handle null.
      */
     public static Formatter getFormatter(String contentType) {
         if (contentType.equalsIgnoreCase("xml")) {

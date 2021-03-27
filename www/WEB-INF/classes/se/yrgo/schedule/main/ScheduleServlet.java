@@ -29,77 +29,98 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * <p>
  * The substitute_id and day parameters can be combined or used alone.
  * </p>
+ * <p>
+ * Use the bash file compile_servlet_and_start_winstone.sh to automatically
+ * compile and start the servlet.
+ * </p>
+ * <p>
+ * Use the bash file clean.sh to automatically remove compiled files to save
+ * space.
+ * </p>
+ * <p>
+ * Use the various test files to test the error messages.
+ * </p>
  */
 public class ScheduleServlet extends HttpServlet {
-    /**
-     * 
-     */
+
+    private PrintWriter out;
+    
+    // Serializable class requirement
     private static final long serialVersionUID = 3107939771013777557L;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Read the request as UTF-8
         request.setCharacterEncoding(UTF_8.name());
-
-        // Parse the arguments - see ParamParser class
         ParamParser parser = new ParamParser(request);
-        // Set the content type (using the parser)
         response.setContentType(parser.contentType());
-        // To write the response, we're using a PrintWriter
         response.setCharacterEncoding(UTF_8.name());
-        PrintWriter out = response.getWriter();
-        // Get access to the database, using a factory
-        // Assignments is an interface - see Assignments interface
-        Assignments db = AssignmentsFactory.getAssignments();
-        // Start with an empty list (makes code easier)
-        List<Assignment> assignments = new ArrayList<>();
-        // Call the correct method, depending on the parser's type value
+        out = response.getWriter();
         try {
-            switch (parser.type()) {
-            case ALL:
-                assignments = db.all();
-                break;
-            case TEACHER_ID_AND_DAY:
-                assignments = db.forTeacherAt(parser.teacherId(), parser.day());
-                break;
-            case DAY:
-                assignments = db.at(parser.day());
-                break;
-            case TEACHER_ID:
-                assignments = db.forTeacher(parser.teacherId());
-            }
-        } catch (AccessException e) {
-            out.println("Error fetching data: " + e.getMessage());
-            System.err.println("Error: " + e);
-            e.printStackTrace();
-        }
-        // Get a formatter, by asking the parser for the format
-        try {
+            List<Assignment> assignments = schedule(parser);
             if (assignments.size() <= 0) {
+                //For testing no data found please use the test_bad_date_and_teacher.sh file
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
             Formatter formatter = FormatterFactory.getFormatter(parser.format());
-            // Format the result to the format according to the parser:
             String result = formatter.format(assignments);
             if (!result.equals("XML Error")) {
-                // Print the result and close the PrintWriter
                 out.println(result);
             } else {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.setContentType("text/html");
-                out.println("<html><head><title>XML error</title></head>");
-                out.println("<body>Could not create a XML-file");
-                out.println(" - Please report to the administrator</body>");
-                out.println("</html>");
-            }
+                xmlError(response);
+            }  
+        } catch (AccessException e) {
+            accessError(response);
         } catch (IllegalArgumentException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.setContentType("text/html");
-            out.println("<html><head><title>Format error</title></head>");
-            out.println("<body>Format missing or not supported");
-            out.println(" - We support xml and json</body>");
-            out.println("</html>");
+            formatError(response);
         }
         out.close();
+    }
+    
+    private List<Assignment> schedule(ParamParser parser) throws AccessException {
+        Assignments db = AssignmentsFactory.getAssignments();
+        List<Assignment> assignments = new ArrayList<>();
+        switch (parser.type()) {
+        case ALL:
+            assignments = db.all();
+            break;
+        case TEACHER_ID_AND_DAY:
+            assignments = db.forTeacherAt(parser.teacherId(), parser.day());
+            break;
+        case DAY:
+            assignments = db.at(parser.day());
+            break;
+        case TEACHER_ID:
+            assignments = db.forTeacher(parser.teacherId());
+        }
+        return assignments;
+    }
+
+    //For testing not supported formats please use the testjsong.sh file.
+    private void formatError(HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        response.setContentType("text/html");
+        out.println("<html><head><title>Format error</title></head>");
+        out.println("<body>Format missing or not supported");
+        out.println(" - We support xml and json</body>");
+        out.println("</html>");     
+    }
+
+    private void accessError(HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.setContentType("text/html");
+        out.println("<html><head><title>Problems with database</title></head>");
+        out.println("<body>Error accessing servlet database");
+        out.println(" - Please report to the administrator</body>");
+        out.println("</html>");
+        
+    }
+
+    private void xmlError(HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.setContentType("text/html");
+        out.println("<html><head><title>XML error</title></head>");
+        out.println("<body>Could not create a XML-file");
+        out.println(" - Please report to the administrator</body>");
+        out.println("</html>");        
     }
 }

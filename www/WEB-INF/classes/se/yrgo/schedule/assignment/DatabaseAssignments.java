@@ -23,18 +23,18 @@ public class DatabaseAssignments implements Assignments {
                     .append(" join school on schedule.school_id = school.school_id WHERE substitute.substitute_id=")
                     .toString();
 
-    DBHelper db;
+    private DBHelper db;
 
-    DatabaseAssignments() {
+    /** A simple constructor that creates a DBHelper member variable */
+    public DatabaseAssignments() {
         db = new DBHelper();
     }
 
     @Override
     public List<Assignment> all() throws AccessException {
-        List<Assignment> result = new ArrayList<>();
         try {
             ResultSet resultSet = db.fetch(SELECT_ALL);
-            result = addAssignments(resultSet);
+            List<Assignment> result = addAssignments(resultSet);
             return result;
         } catch (SQLException sqle) {
             throw new AccessException("Problem fetching all assignments", sqle);
@@ -43,10 +43,9 @@ public class DatabaseAssignments implements Assignments {
 
     @Override
     public List<Assignment> forTeacher(String teacherId) throws AccessException {
-        List<Assignment> result = new ArrayList<>();
         try {
             ResultSet resultSet = db.fetch(SELECT_WITH_SUBSTITUTE_ID + teacherId);
-            result = addAssignments(resultSet);
+            List<Assignment> result = addAssignments(resultSet);
             return result;
         } catch (SQLException sqle) {
             throw new AccessException("Problem fetching all assignments", sqle);
@@ -55,10 +54,9 @@ public class DatabaseAssignments implements Assignments {
 
     @Override
     public List<Assignment> at(String date) throws AccessException {
-        List<Assignment> result = new ArrayList<>();
         try {
             ResultSet resultSet = db.fetch(SELECT_ALL + " where schedule.day = '" + date + " 08:00:00'");
-            result = addAssignments(resultSet);
+            List<Assignment> result = addAssignments(resultSet);
             return result;
         } catch (SQLException sqle) {
             throw new AccessException("Problem fetching all assignments", sqle);
@@ -67,17 +65,17 @@ public class DatabaseAssignments implements Assignments {
 
     @Override
     public List<Assignment> forTeacherAt(String teacherId, String date) throws AccessException {
-        List<Assignment> result = new ArrayList<>();
         try {
             ResultSet resultSet = db
                     .fetch(SELECT_WITH_SUBSTITUTE_ID + teacherId + " and schedule.day='" + date + " 08:00:00'");
-            result = addAssignments(resultSet);
+            List<Assignment> result = addAssignments(resultSet);
             return result;
         } catch (SQLException sqle) {
             throw new AccessException("Problem fetching all assignments", sqle);
         }
     }
 
+    //SQLException are catched and AcessException is thrown instead.
     private List<Assignment> addAssignments(ResultSet rs) throws SQLException {
         List<Assignment> result = new ArrayList<>();
         while (rs.next()) {
