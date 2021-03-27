@@ -50,10 +50,9 @@ public class JsonFormatter implements Formatter {
 
     private static JSONArray notFound() {
         JSONArray JSONNotFound = new JSONArray();
-
-        JSONNotFound.put(createSimple("title", "No assignments found"));
+        /*JSONNotFound.put(createSimple("title", "No assignments found"));
         JSONNotFound.put(createSimple("body", "No assignment found for that date and/or substitute"));
-        JSONNotFound.put(createSimple("footer", " - Try with a new date and/or substitute"));
+        JSONNotFound.put(createSimple("footer", " - Try with a new date and/or substitute"));*/
 
         return JSONNotFound;
     }

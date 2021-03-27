@@ -38,16 +38,15 @@ public class XmlFormatter implements Formatter {
             return "XML Error";
         }
         document = docBuilder.newDocument();
-
+        Element root = document.createElement("schedules");
+        document.appendChild(root);
         if (assignments.size() > 0) {
-            Element root = document.createElement("schedules");
-            document.appendChild(root);
             for (Assignment assignment : assignments) {
                 root.appendChild(createChildNode(assignment));
             }
         } else {
             // For testing no data found please use the test_bad_date_and_teacher.sh file
-            notFound();
+            notFound(root);
         }
         String xml;
         try {
@@ -98,11 +97,10 @@ public class XmlFormatter implements Formatter {
         parent.appendChild(childElement);
     }
     
-    private void notFound() {
-        Element root = document.createElement("not_found");
-        document.appendChild(root);
+    private void notFound(Element root) {
+        /*document.appendChild(root);
         addChild("title", "No assignments found", root);
         addChild("body", "No assignment found for that date and/or substitute", root);
-        addChild("footer", " - Try with a new date and/or substitute", root);     
+        addChild("footer", " - Try with a new date and/or substitute", root);*/     
     }
 }
