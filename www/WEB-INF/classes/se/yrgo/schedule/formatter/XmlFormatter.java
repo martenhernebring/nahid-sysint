@@ -38,10 +38,19 @@ public class XmlFormatter implements Formatter {
             return "XML Error";
         }
         document = docBuilder.newDocument();
-        Element root = document.createElement("schedules");
-        document.appendChild(root);
-        for (Assignment assignment : assignments) {
-            root.appendChild(createChildNode(assignment));
+
+        if (assignments.size() > 0) {
+            Element root = document.createElement("schedules");
+            document.appendChild(root);
+            for (Assignment assignment : assignments) {
+                root.appendChild(createChildNode(assignment));
+            }
+        } else {
+            Element root = document.createElement("not_found");
+            document.appendChild(root);
+            addChild("title", "No assignments found", root);
+            addChild("body", "No assignment found for that date and/or substitute", root);
+            addChild("footer", " - Try with a new date and/or substitute", root);
         }
         String xml;
         try {
@@ -49,6 +58,7 @@ public class XmlFormatter implements Formatter {
         } catch (TransformerException e) {
             return "XML Error";
         }
+
         return xml;
     }
 
@@ -67,14 +77,14 @@ public class XmlFormatter implements Formatter {
     private Node createChildNode(Assignment assign) {
         Element schedule = document.createElement("schedule");
         schedule.setAttribute("date", assign.date());
-        
+
         Element schoolElement = createElement(assign.school());
         schedule.appendChild(schoolElement);
-        
+
         Element substituteElement = document.createElement("substitute");
         addChild("name", assign.teacher().getName(), substituteElement);
         schedule.appendChild(substituteElement);
-        
+
         return schedule;
     }
 

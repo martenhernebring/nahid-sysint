@@ -1,4 +1,4 @@
-package se.yrgo.schedule;
+package se.yrgo.schedule.main;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -75,12 +75,26 @@ public class ScheduleServlet extends HttpServlet {
         }
         // Get a formatter, by asking the parser for the format
         try {
+            if (assignments.size() <= 0) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            }
             Formatter formatter = FormatterFactory.getFormatter(parser.format());
             // Format the result to the format according to the parser:
             String result = formatter.format(assignments);
-            // Print the result and close the PrintWriter
-            out.println(result);
+            if (!result.equals("XML Error")) {
+                // Print the result and close the PrintWriter
+                out.println(result);
+            } else {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.setContentType("text/html");
+                out.println("<html><head><title>XML error</title></head>");
+                out.println("<body>Could not create a XML-file");
+                out.println(" - Please report to the administrator</body>");
+                out.println("</html>");
+            }
         } catch (IllegalArgumentException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setContentType("text/html");
             out.println("<html><head><title>Format error</title></head>");
             out.println("<body>Format missing or not supported");
             out.println(" - We support xml and json</body>");

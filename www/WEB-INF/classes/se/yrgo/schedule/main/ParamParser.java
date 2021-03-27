@@ -1,4 +1,4 @@
-package se.yrgo.schedule;
+package se.yrgo.schedule.main;
 
 import javax.servlet.http.*;
 import static java.nio.charset.StandardCharsets.UTF_8;

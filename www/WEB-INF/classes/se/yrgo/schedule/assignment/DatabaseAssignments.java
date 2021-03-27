@@ -40,7 +40,7 @@ public class DatabaseAssignments implements Assignments {
             throw new AccessException("Problem fetching all assignments", sqle);
         }
     }
-    
+
     @Override
     public List<Assignment> forTeacher(String teacherId) throws AccessException {
         List<Assignment> result = new ArrayList<>();
@@ -69,7 +69,8 @@ public class DatabaseAssignments implements Assignments {
     public List<Assignment> forTeacherAt(String teacherId, String date) throws AccessException {
         List<Assignment> result = new ArrayList<>();
         try {
-            ResultSet resultSet = db.fetch(SELECT_WITH_SUBSTITUTE_ID + teacherId + " and schedule.day='" + date + " 08:00:00'");
+            ResultSet resultSet = db
+                    .fetch(SELECT_WITH_SUBSTITUTE_ID + teacherId + " and schedule.day='" + date + " 08:00:00'");
             result = addAssignments(resultSet);
             return result;
         } catch (SQLException sqle) {
@@ -79,7 +80,7 @@ public class DatabaseAssignments implements Assignments {
 
     private List<Assignment> addAssignments(ResultSet rs) throws SQLException {
         List<Assignment> result = new ArrayList<>();
-        while (rs.next()) { 
+        while (rs.next()) {
             Substitute substitute = new Substitute(rs.getString("name"));
             String date = rs.getString("day");
             School school = new School(rs.getString("school_name"), rs.getString("address"));
