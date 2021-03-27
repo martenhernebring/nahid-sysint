@@ -2,3 +2,4 @@
 /FormatterFactory.class
 /HtmlFormatter.class
 /JsonFormatter.class
+/XmlFormatter.class

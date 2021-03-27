@@ -85,7 +85,6 @@ public class ParamParser {
 
     private void parseValues() {
         this.format = request.getParameter("format");
-        System.out.println(this.format);
         if (format != null) {
             format = format.toLowerCase();
         } else {

@@ -1,12 +1,11 @@
 package se.yrgo.schedule.formatter;
 
 /**
- * A factory to get a formatter (only HTML is implemented)
+ * A factory to get a formatter
  */
 public class FormatterFactory {
 
-    private static Formatter XML_FORMATTER;
-    private static Formatter HTML_FORMATTER = new HtmlFormatter();
+    private static Formatter XML_FORMATTER = new XmlFormatter();
     private static Formatter JSON_FORMATTER = new JsonFormatter();
 
     /**
@@ -22,7 +21,8 @@ public class FormatterFactory {
         } else if (contentType.equalsIgnoreCase("json")) {
             return JSON_FORMATTER;
         } else {
-            return HTML_FORMATTER;
+            throw new IllegalArgumentException("Format not supported");
         }
     }
+
 }
