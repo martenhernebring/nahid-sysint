@@ -9,6 +9,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * </p>
  * <p>
  * Tries to detect:
+ * </p>
  * <ul>
  * <li>The type (all|day|teacher_id|day and teacher_id</li>
  * <li>day</li>
@@ -16,7 +17,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * <li>contentType</li>
  * <li>format (html|json|xml) (only html is implemented in this example)</li>
  * </ul>
- * </p>
  */
 public class ParamParser {
     enum QueryType {
